@@ -1,3 +1,4 @@
 <?php
-$coon = mysqli_connect("localhosl","root","","25550024")
+$conn = mysqli_connect("localhost","root","","punyawiby");
+
 ?>
