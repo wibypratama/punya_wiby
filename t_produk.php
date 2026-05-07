@@ -285,7 +285,7 @@ if (isset($_POST['simpan'])) {
             &copy; Copyright <strong><span>WIBY</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-            Designed by <a href="">Nama Kalian</a>
+            Designed by <a href="">WIBY</a>
         </div>
     </footer><!-- End Footer -->
 
