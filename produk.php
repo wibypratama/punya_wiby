@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Produk - punya_wiby</title>
+  <title>Data Produk - punya_wiby</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -152,7 +152,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Produk</h1>
+      <h1>Data Produk</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
@@ -162,10 +162,11 @@
     </div><!-- End Page Title -->
       <div class="row">
         <div class="col-lg-12">
+          
           <div class="card">
             <div class="card-body mt-3">
               <a href="t_produk.php" class="btn btn-primary">Tambah Data</a>
-              <a href="stok.php" class="btn btn-primary">Stok</a>
+              <a href="stok.php" class="btn btn-dark">Stok</a>
             </div>
           </div>
         </div>
