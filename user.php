@@ -194,20 +194,14 @@
                   <tbody>
                     <?php
                     include "Koneksi.php";
-
                     $no = 1;
                     $sql = mysqli_query($conn, "SELECT * FROM users");
-
                     while ($data = mysqli_fetch_array($sql)) {
                     ?>
-
                       <tr>
                         <td><?php echo $no++; ?></td>
-
                         <td><?php echo $data['name']; ?></td>
-
                         <td><?php echo $data['email']; ?></td>
-
                         <td><?php echo ucfirst($data['role']); ?></td>
 
                         <td>
@@ -220,16 +214,10 @@
                           ?>
                         </td>
 
-                        <td>
-                          <?php echo date('d-m-Y H:i', strtotime($data['created_at'])); ?>
-                        </td>
+                        <td><?php echo date('d-m-Y H:i', strtotime($data['created_at'])); ?></td>
 
                         <td>
-                          <a href="e_user.php?id=<?php echo $data['id']; ?>"
-                            class="btn btn-warning btn-sm">
-                            Edit
-                          </a>
-
+                          <a href="e_user.php?id=<?php echo $data['id']; ?>"class="btn btn-warning btn-sm">Edit</a>
                           <a href="h_user.php?id=<?php echo $data['id']; ?>"
                             class="btn btn-danger btn-sm"
                             onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
