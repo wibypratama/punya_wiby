@@ -183,8 +183,9 @@
                   <tr>
                     <th scope="col">No</th>
                     <th scope="col">Kode Produk</th>
+                    <th scope="col">Nama Produk</th>
                     <th scope="col">Kategori</th>
-                    <th scope="col">stok</th>
+                    <th scope="col">Stok</th>
                     <th scope="col">Harga</th>
                     <th scope="col">Gambar</th>
                     <th scope="col">Aksi</th>
