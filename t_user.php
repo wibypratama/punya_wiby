@@ -42,7 +42,7 @@ if (isset($_POST['simpan'])) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Manajemen User - punya_wiby</title>
+    <title>User - punya_wiby</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -205,8 +205,8 @@ if (isset($_POST['simpan'])) {
                         <div class="card-body">
                             <h5 class="card-title">Vertical Form</h5>
 
-                            <!-- Vertical Form -->
-                            <div class="card-body">
+    <!-- Vertical Form -->
+    <div class="card-body">
     <h5 class="card-title">Tambah User</h5>
 
     <form class="row g-3" method="post">
