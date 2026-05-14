@@ -14,15 +14,10 @@ if (isset($_POST['update'])) {
     $is_active = $_POST['is_active'];
 
     // cek email (kecuali email milik user ini sendiri)
-    $cek = mysqli_query($conn, "SELECT * FROM users 
-                                WHERE email='$email' 
-                                AND id!='{$id}'");
+    $cek = mysqli_query($conn, "SELECT * FROM users WHERE email='$email' AND id!='{$id}'");
 
     if (mysqli_num_rows($cek) > 0) {
-        echo "<script>
-                alert('Email sudah digunakan user lain!');
-                window.location='user.php';
-              </script>";
+        echo "<script>alert('Email sudah digunakan user lain!');window.location='user.php';</script>";
         exit;
     }
 
@@ -37,9 +32,7 @@ if (isset($_POST['update'])) {
                     password='$password_hash',
                     role='$role',
                     is_active='$is_active'
-                    WHERE id='$id'
-                ");
-
+                    WHERE id='$id'");
     } else {
 
         // jika password kosong → jangan update password
@@ -48,20 +41,13 @@ if (isset($_POST['update'])) {
                     email='$email',
                     role='$role',
                     is_active='$is_active'
-                    WHERE id='$id'
-                ");
+                    WHERE id='$id'");
     }
 
     if ($query) {
-        echo "<script>
-                alert('User berhasil diupdate!');
-                window.location='user.php';
-              </script>";
+        echo "<script>alert('User berhasil diupdate!');window.location='user.php';</script>";
     } else {
-        echo "<script>
-                alert('User gagal diupdate!');
-                window.location='user.php';
-              </script>";
+        echo "<script>alert('User gagal diupdate!');window.location='user.php';</script>";
     }
 }
 ?>
@@ -240,79 +226,46 @@ if (isset($_POST['update'])) {
 
                                 <div class="col-12">
                                     <label class="form-label">Nama</label>
-                                    <input type="text"
-                                        class="form-control"
-                                        name="name"
-                                        value="<?php echo $user['name']; ?>"
-                                        required>
+                                    <input type="text" class="form-control" name="name"
+                                        value="<?php echo $user['name']; ?>"required>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">Email</label>
-                                    <input type="email"
-                                        class="form-control"
-                                        name="email"
-                                        value="<?php echo $user['email']; ?>"
-                                        required>
+                                    <input type="email"class="form-control" name="email"
+                                        value="<?php echo $user['email']; ?>"required>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">Password</label>
-                                    <input type="password"
-                                        class="form-control"
-                                        name="password">
-
-                                    <small class="text-muted">
-                                        Kosongkan jika tidak ingin mengubah password
-                                    </small>
+                                    <input type="password"class="form-control" name="password">
+                                    <small class="text-muted">Kosongkan jika tidak ingin mengubah password</small>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">Role</label>
-
                                     <select class="form-control" name="role" required>
-                                        <option value="admin"
-                                            <?php if ($user['role'] == 'admin') echo 'selected'; ?>>
-                                            Admin
-                                        </option>
-
-                                        <option value="staff"
-                                            <?php if ($user['role'] == 'staff') echo 'selected'; ?>>
-                                            Staff
-                                        </option>
+                                        <option value="admin"<?php if ($user['role'] == 'admin') echo 'selected'; ?>>Admin</option>
+                                        <option value="staff"<?php if ($user['role'] == 'staff') echo 'selected'; ?>>Staff</option>
                                     </select>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">Status</label>
-
                                     <select class="form-control" name="is_active">
-                                        <option value="1"
-                                            <?php if ($user['is_active'] == 1) echo 'selected'; ?>>
-                                            Aktif
-                                        </option>
-
-                                        <option value="0"
-                                            <?php if ($user['is_active'] == 0) echo 'selected'; ?>>
-                                            Nonaktif
-                                        </option>
+                                        <option value="1"<?php if ($user['is_active'] == 1) echo 'selected'; ?>>Aktif</option>
+                                        <option value="0"<?php if ($user['is_active'] == 0) echo 'selected'; ?>>Nonaktif</option>
                                     </select>
                                 </div>
 
                                 <div class="text-center">
-                                    <a href="users.php" class="btn btn-warning">
-                                        Kembali
-                                    </a>
-
-                                    <button type="submit"
-                                        class="btn btn-success"
-                                        name="update">
-                                        Update
-                                    </button>
+                                    <a href="users.php" class="btn btn-warning">Kembali</a>
+                                    <button type="submit"class="btn btn-success"name="update">Update</button>
                                 </div>
 
                             </form>
                             <!-- Vertical Form -->
+
 
                         </div>
                     </div>
