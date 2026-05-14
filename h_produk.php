@@ -3,6 +3,17 @@ include "Koneksi.php";
 
 $id = $_GET['id'];
 
+// ambil nama file gambar
+$get = mysqli_query($conn, "SELECT gambar FROM products WHERE id='$id'");
+$data = mysqli_fetch_array($get);
+$gambar = $data['gambar'];
+
+// hapus file gambar jika ada
+if ($gambar != "" && file_exists("produk_img/" . $gambar)) {
+    unlink("produk_img/" . $gambar);
+}
+
+//hapus data dari database
 $hapus = mysqli_query($conn, "DELETE FROM products WHERE id='$id'");
 
 if ($hapus) {
