@@ -170,60 +170,81 @@ $total_stok_kritis = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM product
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <!-- Laporan Stok Barang -->
+    
     <section class="section">
       <div class="row">
+
+      <!-- Laporan Stok Barang -->
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">Laporan Stok Barang</h5>
               <p class="text-muted">Menampilkan seluruh data stok barang saat ini.</p>
+
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-primary">Total Item: <?= $total_item; ?></span>
-                <a href="laporan_stok.php" class="btn btn-sm btn-primary">Lihat Laporan</a>
+                <a href="laporan_stok.php" class="btn btn-sm btn-primary" target="_blank">
+                  Lihat Laporan
+                </a>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
         <!-- Laporan Barang Masuk -->
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">Laporan Barang Masuk</h5>
               <p class="text-muted">Riwayat barang yang masuk ke gudang.</p>
+
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-success">Total Transaksi: <?= $total_barang_masuk; ?></span>
-                <a href="laporan_barang_masuk.php" class="btn btn-sm btn-success">Lihat Laporan</a>
+                <a href="laporan_barang_masuk.php" class="btn btn-sm btn-success" target="_blank">
+                  Lihat Laporan
+                </a>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
         <!-- Laporan Barang Keluar -->
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">Laporan Barang Keluar</h5>
               <p class="text-muted">Riwayat barang yang keluar dari gudang.</p>
+              
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-danger">Total Transaksi: <?= $total_barang_keluar; ?></span>
-                <a href="laporan_barang_keluar.php" class="btn btn-sm btn-danger">Lihat Laporan</a>
-              </div>
+                <a href="laporan_barang_keluar.php" class="btn btn-sm btn-danger" target="_blank">
+                  Lihat Laporan
+                </a>
+               </a>
             </div>
           </div>
         </div>
+      </div>
+
         <!-- Laporan Stok Minimum --> 
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title text-warning">Stok Minimum</h5>
               <p class="text-muted">Barang dengan stok hampir habis.</p>
+              
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-warning">Item Kritis: <?= $total_stok_kritis; ?></span>
-                <a href="laporan_stok_minimum.php" class="btn btn-sm btn-warning" target="_blank">Lihat Laporan</a>
+                <a href="laporan_stok_minimum.php" class="btn btn-sm btn-warning" target="_blank">
+                  Lihat Laporan
+                </a>
               </div>
             </div>
           </div>
         </div>
+        
       </div>
     </section>
 
