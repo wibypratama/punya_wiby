@@ -1,4 +1,13 @@
-<?php $page = basename($_SERVER['PHP_SELF']); ?>
+<?php
+session_start();
+include 'Koneksi.php';
+
+// cek apakah sudah login
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +38,6 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -45,65 +53,32 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
+
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>WIBY PRATAMA</h6>
-              <span>Admin</span>
+              <h6><?php echo isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; ?></h6>
+              <span><?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'Role'; ?></span>
             </li>
             <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
+              <hr class="dropdown-divider" />
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
 
@@ -111,48 +86,42 @@
 
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
+
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <!-- Dashboard -->
       <li class="nav-item">
-        <a class="nav-link <?= ($page == 'index.php') ? '' : 'collapsed' ?>" href="index.php">
-          <i class="bi bi-speedometer2"></i>
+        <a class="nav-link collapsed" href="index.php">
+          <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
-      </li>
-
-      <!-- Kategori Produk -->
+      </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link <?= ($page == 'kategori_produk.php') ? '' : 'collapsed' ?>" href="kategori_produk.php">
+        <a class="nav-link " href="kategori_produk.php">
           <i class="bi bi-tags"></i>
           <span>Kategori Produk</span>
         </a>
-      </li>
+      </li><!-- End Profile Page Nav -->
 
-      <!-- Data Produk -->
       <li class="nav-item">
-        <a class="nav-link <?= ($page == 'data_produk.php') ? '' : 'collapsed' ?>" href="data_produk.php">
-          <i class="bi bi-box"></i>
+        <a class="nav-link collapsed" href="produk.php">
+          <i class="bi bi-box-seam"></i>
           <span>Data Produk</span>
         </a>
-      </li>
+      </li><!-- End Data Produk Page Nav -->
 
-      <!-- Laporan -->
       <li class="nav-item">
-        <a class="nav-link <?= ($page == 'laporan.php') ? '' : 'collapsed' ?>" href="laporan.php">
+        <a class="nav-link collapsed" href="laporan.php">
           <i class="bi bi-bar-chart-line"></i>
           <span>Laporan</span>
         </a>
-      </li>
+      </li><!-- End Laporan Page Nav -->
 
-      <!-- Manajemen User -->
       <li class="nav-item">
-        <a class="nav-link <?= ($page == 'user.php') ? '' : 'collapsed' ?>" href="user.php">
+        <a class="nav-link collapsed" href="users.php">
           <i class="bi bi-people"></i>
           <span>Manajemen User</span>
         </a>
-      </li>
-
+      </li><!-- End Register Page Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -160,7 +129,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>KATEGORI PRODUK</h1>
+      <h1>Kategori Produk</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
@@ -168,35 +137,32 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <div class="row">
-      <div class="col-lg-12">
-
-        <div class="card">
-          <div class="card-body mt-3">
-            <a href="t_kat.php" class="btn btn-primary">Tambah Data</a>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body mt-3">
+              <a href="t_kat.php" class="btn btn-primary">Tambah Data</a>
+            </div>
           </div>
-        </div> 
+        </div>
       </div>
-    </div>
-
     <section class="section">
       <div class="row">
         <div class="col-lg-12">
 
           <div class="card">
             <div class="card-body mt-3">
-
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
-                    <th scope="col">NO</th>
+                    <th scope="col">No</th>
                     <th scope="col">Kode Kategori</th>
                     <th scope="col">Kategori Produk</th>
                     <th scope="col">Aksi</th>
                   </tr>
                 </thead>
-                <tbody> 
+                <tbody>
                   <?php
                   include "Koneksi.php";
                   $no = 1;
@@ -229,14 +195,10 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>WIBY</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      Designed by <a href="https://www.instagram.com/wibpttraaa_/">WIBY_PRATAMA</a>
     </div>
   </footer><!-- End Footer -->
 

@@ -1,3 +1,13 @@
+<?php
+session_start();
+include 'Koneksi.php';
+
+// cek apakah sudah login
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,60 +64,28 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>WIBY PRATAMA</h6>
-              <span>Admin</span>
+              <h6><?php echo isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; ?></h6>
+              <span><?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'Role'; ?></span>
             </li>
             <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
+              <hr class="dropdown-divider" />
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
 
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -139,7 +117,7 @@
       </li><!-- End Laporan Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link " href="user.php">
+        <a class="nav-link " href="users.php">
           <i class="bi bi-people"></i>
           <span>Manajemen User</span>
         </a>
@@ -154,102 +132,90 @@
       <h1>Manajemen User</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-          <li class="breadcrumb-item active">Manajemen User</li>
+          <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+          <li class="breadcrumb-item active">Users</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body mt-3">
+            <a href="t_user.php" class="btn btn-primary">Tambah Data</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <section class="section">
       <div class="row">
         <div class="col-lg-12">
 
           <div class="card">
-            <div class="card-body mt-3">
-              <a href="t_user.php" class="btn btn-primary"> Tambah Data</a>
+            <div class="card-body">
+              <h5 class="card-title">Data User</h5>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Dibuat</th>
+                    <th scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php 
+                include 'koneksi.php';
+                $no = 1;
+                $sql = mysqli_query($conn, "SELECT * FROM users");
+                while ($data = mysqli_fetch_array($sql)) {
+                ?>
+                <tr>
+                  <td><?php echo $no++; ?></td>
+                  <td><?php echo $data['name']; ?></td>
+                  <td><?php echo $data['email']; ?></td>
+                  <td><?php echo ucfirst($data['role']); ?></td>
+                  <td>
+                    <?php 
+                    if ($data['is_active'] == 1) {
+                      echo '<span class="badge bg-success">Aktif</span>';
+                    } else {
+                      echo '<span class="badge bg-danger">Nonaktif</span>';
+                    }
+                    ?>
+                  </td>
+                  <td><?php echo date('Y-m-d H:i:s', strtotime($data['created_at'])); ?></td>
+                  <td>
+                    <a href="e_user.php?id=<?php echo $data['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="h_user.php?id=<?php echo $data['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">Hapus</a>
+                  </td>
+                </tr>
+                <?php } ?>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
             </div>
           </div>
+
         </div>
       </div>
-      <section class="section">
-        <div class="row">
-          <div class="col-lg-12">
-
-            <div class="card">
-              <div class="card-body mt-3">
-
-                <!-- Table with stripped rows -->
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nama</th>
-                      <th>Email</th>
-                      <th>Role</th>
-                      <th>Status</th>
-                      <th>Dibuat</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    include "Koneksi.php";
-                    $no = 1;
-                    $sql = mysqli_query($conn, "SELECT * FROM users");
-                    while ($data = mysqli_fetch_array($sql)) {
-                    ?>
-                      <tr>
-                        <td><?php echo $no++; ?></td>
-                        <td><?php echo $data['name']; ?></td>
-                        <td><?php echo $data['email']; ?></td>
-                        <td><?php echo ucfirst($data['role']); ?></td>
-
-                        <td>
-                          <?php
-                          if ($data['is_active'] == 1) {
-                            echo '<span class="badge bg-success">Aktif</span>';
-                          } else {
-                            echo '<span class="badge bg-danger">Nonaktif</span>';
-                          }
-                          ?>
-                        </td>
-
-                        <td><?php echo date('d-m-Y H:i', strtotime($data['created_at'])); ?></td>
-
-                        <td>
-                          <a href="e_user.php?id=<?php echo $data['id']; ?>"class="btn btn-warning btn-sm">Edit</a>
-                          <a href="h_user.php?id=<?php echo $data['id']; ?>"
-                            class="btn btn-danger btn-sm"
-                            onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
-                            Hapus
-                          </a>
-                        </td>
-                      </tr>
-                    <?php } ?>
-                  </tbody>
-                </table>
-                <!-- End Table with stripped rows -->
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
+    </section>
 
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
+   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>punya_wiby</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>WIBY</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://www.instagram.com/wibpttraaa_/">WIBY PRATAMA</a>
+      Designed by <a href="https://www.instagram.com/wibpttraaa_/">WIBY_PRATAMA</a>
     </div>
   </footer><!-- End Footer -->
 

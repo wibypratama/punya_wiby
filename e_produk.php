@@ -1,10 +1,17 @@
 <?php
-include "Koneksi.php";
+session_start();
+include 'Koneksi.php';
+
+// cek apakah sudah login
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
+
 $id = $_GET['id'];
 $query = mysqli_query($conn, "SELECT * FROM products WHERE id = '$id'");
 $hasil = mysqli_fetch_array($query);
 if (isset($_POST['update'])) {
-
     $nm_produk = $_POST['nm_produk'];
     $stok = $_POST['stok'];
     $min_stok = $_POST['min_stok'];
@@ -13,15 +20,13 @@ if (isset($_POST['update'])) {
 
     $imgfile = $_FILES['gambar']['name'];
 
-    // kalau upload gambar baru
+    //upload gambar baru
     if ($imgfile != "") {
-
         $tmp = $_FILES['gambar']['tmp_name'];
         $ext = strtolower(pathinfo($imgfile, PATHINFO_EXTENSION));
         $allowed = ["jpg", "jpeg", "png", "webp"];
 
         if (in_array($ext, $allowed)) {
-
             $imgnew= md5(time() . $imgfile) . "." . $ext;
             move_uploaded_file($tmp, "produk_img/" . $imgnew);
         
@@ -33,7 +38,7 @@ if (isset($_POST['update'])) {
             price = '$harga',
             gambar = '$imgnew'
             WHERE id = '$id'
-        ");
+            ");
         } else {
         echo "<script>alert('Format gambar tidak valid');</script>";
         return;
@@ -44,10 +49,10 @@ if (isset($_POST['update'])) {
             category_id = '$id_kategori',
             product_name = '$nm_produk',
             stock = '$stok',
-            min_stock = '$min_stok'
-            price = '$harga',
-            WHERE id = 'id'
-         ");
+            min_stock = '$min_stok',
+            price = '$harga'
+            WHERE id = '$id'
+            ");
     }
     if ($update) {
         echo "<script>alert('Data berhasil diubah!')</script>";
@@ -65,7 +70,7 @@ if (isset($_POST['update'])) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Data Produk - punya_wiby</title>
+    <title>Produk - punya_wiby</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -107,7 +112,6 @@ if (isset($_POST['update'])) {
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-        <li class="nav-item dropdown">
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -116,53 +120,21 @@ if (isset($_POST['update'])) {
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>WIBY PRATAMA</h6>
-              <span>Admin</span>
+              <h6><?php echo isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; ?></h6>
+              <span><?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'Role'; ?></span>
             </li>
             <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
+              <hr class="dropdown-divider" />
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="login.php">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
 
@@ -214,7 +186,7 @@ if (isset($_POST['update'])) {
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>DATA PRODUK</h1>
+            <h1>Data Produk</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
@@ -229,8 +201,9 @@ if (isset($_POST['update'])) {
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="Edit Produk">Tambah Produk</h5>
+                            <h5 class="card-title">Edit Produk</h5>
 
+                            <!-- Vertical Form -->
                             <form class="row g-3" method="post" enctype="multipart/form-data">
                                 <div class="col-12">
                                     <label for="kd_produk" class="form-label">Kode Produk</label>
@@ -266,19 +239,14 @@ if (isset($_POST['update'])) {
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Gambar Lama</label>
-                                    <img src="produk_img/<?php echo $hasil['gambar']; ?>" 
-                                    width="80">
+                                    <img src="produk_img/<?php echo $hasil['gambar']; ?>" width="80">
                                 </div>
                                 <div class="col-12">
                                     <label for="gambar" class="form-label">Ganti Gambar</label>
-                                    <input type="file" class="form-control" id="gambar" 
-                                    name="gambar" accept="image/*">
+                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
                                 </div>
                                 <div class="text-center">
-                                <button type="button" class="btn btn-warning">
-                                    <a href="produk.php" style="color: black; 
-                                    text-decoration:none;">Kembali</a>
-                                    </button>
+                                <button type="button" class="btn btn-warning"><a href="kategori_produk.php" style="color: black; text-decoration:none;">Kembali</a></button>
                                 <button type="reset" class="btn btn-secondary">Reset</button>
                                 <button type="submit" class="btn btn-success" name="update">Update</button>
                                 </div>
@@ -292,15 +260,15 @@ if (isset($_POST['update'])) {
 
     </main><!-- End #main -->
 
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
-        <div class="copyright">
-            &copy; Copyright <strong><span>Nama Sistem</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            Designed by <a href="">WIBY</a>
-        </div>
-    </footer><!-- End Footer -->
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>WIBY</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://www.instagram.com/wibpttraaa_/">WIBY_PRATAMA</a>
+    </div>
+  </footer><!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

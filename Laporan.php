@@ -1,5 +1,12 @@
 <?php
+session_start();
 include 'Koneksi.php';
+
+// cek apakah sudah login
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
 //total stok
 $total_item = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM products"));
 //total transaksi barang masuk
@@ -65,53 +72,21 @@ $total_stok_kritis = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM product
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>WIBY PRATAMA</h6>
-              <span>Admin</span>
+              <h6><?php echo isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; ?></h6>
+              <span><?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'Role'; ?></span>
             </li>
             <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
+              <hr class="dropdown-divider" />
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
 
@@ -162,7 +137,7 @@ $total_stok_kritis = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM product
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>LAPORAN</h1>
+      <h1>Laporan</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
@@ -170,81 +145,60 @@ $total_stok_kritis = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM product
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    
+    <!-- Laporan Stok Barang -->
     <section class="section">
       <div class="row">
-
-      <!-- Laporan Stok Barang -->
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">Laporan Stok Barang</h5>
               <p class="text-muted">Menampilkan seluruh data stok barang saat ini.</p>
-
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-primary">Total Item: <?= $total_item; ?></span>
-                <a href="laporan_stok.php" class="btn btn-sm btn-primary" target="_blank">
-                  Lihat Laporan
-                </a>
+                <a href="laporan_stok.php" class="btn btn-sm btn-primary">Lihat Laporan</a>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
         <!-- Laporan Barang Masuk -->
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">Laporan Barang Masuk</h5>
               <p class="text-muted">Riwayat barang yang masuk ke gudang.</p>
-
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-success">Total Transaksi: <?= $total_barang_masuk; ?></span>
-                <a href="laporan_barang_masuk.php" class="btn btn-sm btn-success" target="_blank">
-                  Lihat Laporan
-                </a>
+                <a href="laporan_barang_masuk.php" class="btn btn-sm btn-success">Lihat Laporan</a>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
         <!-- Laporan Barang Keluar -->
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">Laporan Barang Keluar</h5>
               <p class="text-muted">Riwayat barang yang keluar dari gudang.</p>
-              
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-danger">Total Transaksi: <?= $total_barang_keluar; ?></span>
-                <a href="laporan_barang_keluar.php" class="btn btn-sm btn-danger" target="_blank">
-                  Lihat Laporan
-                </a>
-               </a>
+                <a href="laporan_barang_keluar.php" class="btn btn-sm btn-danger">Lihat Laporan</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
         <!-- Laporan Stok Minimum --> 
         <div class="col-lg-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title text-warning">Stok Minimum</h5>
               <p class="text-muted">Barang dengan stok hampir habis.</p>
-              
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-warning">Item Kritis: <?= $total_stok_kritis; ?></span>
-                <a href="laporan_stok_minimum.php" class="btn btn-sm btn-warning" target="_blank">
-                  Lihat Laporan
-                </a>
+                <a href="laporan_stok_minimum.php" class="btn btn-sm btn-warning" target="_blank">Lihat Laporan</a>
               </div>
             </div>
           </div>
         </div>
-        
       </div>
     </section>
 
@@ -253,14 +207,10 @@ $total_stok_kritis = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM product
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>WIBY</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      Designed by <a href="https://www.instagram.com/wibpttraaa_/">WIBY_PRATAMA</a>
     </div>
   </footer><!-- End Footer -->
 

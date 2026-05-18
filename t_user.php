@@ -1,37 +1,40 @@
 <?php
-include "Koneksi.php";
+session_start();
+include 'Koneksi.php';
+
+// cek apakah sudah login
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
 
 if (isset($_POST['simpan'])) {
-
-    $name      = mysqli_real_escape_string($conn, $_POST['name']);
-    $email     = mysqli_real_escape_string($conn, $_POST['email']);
-    $password  = $_POST['password'];
-    $role      = $_POST['role'];
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = $_POST['password'];
+    $role = $_POST['role'];
     $is_active = $_POST['is_active'];
 
-    // validasi email tidak boleh sama
-    $cek = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
+    //Validasi email tidak sama
+    $cek  = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
     if (mysqli_num_rows($cek) > 0) {
-        echo "<script>alert('Email sudah terdaftar!'); window.location='user.php';</script>";
+        echo "<script>alert('Email sudah terdaftar!'); window.location='t_user.php';</script>";
         exit;
-    }
-
-    // hash password
+    } 
+    //Hash Password
     if (!empty($password)) {
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
     } else {
-        echo "<script>alert('Password wajib diisi!'); window.location='user.php';</script>";
+        echo "<script>alert('Password wajib diisi!'); window.location='t_user.php';</script>";
         exit;
     }
 
-    // insert data
-    $query = mysqli_query($conn, "INSERT INTO users (name,email,password,role,is_active) 
-              VALUES ('$name', '$email', '$password', '$role', '$is_active')");
-
-    if ($query) {
-        echo "<script>alert('User berhasil ditambahkan!'); window.location='user.php';</script>";
+    //insert data
+    $query = mysqli_query($conn, "INSERT INTO users (name, email, password, role, is_active) VALUES ('$name', '$email', '$password_hash', '$role', '$is_active')");
+    if ($query) {   
+        echo "<script>alert('User berhasil disimpan!'); window.location='users.php';</script>";
     } else {
-        echo "<script>alert('User gagal ditambahkan!'); window.location='user.php';</script>";
+        echo "<script>alert('User gagal disimpan!'); window.location='t_user.php';</script>";
     }
 }
 ?>
@@ -42,7 +45,7 @@ if (isset($_POST['simpan'])) {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>User - punya_wiby</title>
+    <title>Users - punya_wiby</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -70,77 +73,47 @@ if (isset($_POST['simpan'])) {
 
 <body>
 
-    <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center">
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
 
-        <div class="d-flex align-items-center justify-content-between">
-            <a href="index.php" class="logo d-flex align-items-center">
-                <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">WIBY</span>
-            </a>
-            <i class="bi bi-list toggle-sidebar-btn"></i>
-        </div><!-- End Logo -->
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.php" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">WIBY</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
 
-        <nav class="header-nav ms-auto">
-            <ul class="d-flex align-items-center">
 
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    </a><!-- End Profile Iamge Icon -->
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                        <li class="dropdown-header">
-                            <h6>WIBY PRATAMA</h6>
-                            <span>Admin</span>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+          </a><!-- End Profile Iamge Icon -->
 
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6><?php echo isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; ?></h6>
+              <span><?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'Role'; ?></span>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
 
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-gear"></i>
-                                <span>Account Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+      </ul>
+    </nav><!-- End Icons Navigation -->
 
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Need Help?</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
-                        </li>
-
-                    </ul><!-- End Profile Dropdown Items -->
-                </li><!-- End Profile Nav -->
-
-            </ul>
-        </nav><!-- End Icons Navigation -->
-
-    </header><!-- End Header -->
+  </header><!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
@@ -156,28 +129,28 @@ if (isset($_POST['simpan'])) {
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="kategori_produk.php">
-                    <i class="bi bi-person"></i>
+                    <i class="bi bi-tags"></i>
                     <span>Kategori Produk</span>
                 </a>
             </li><!-- End Profile Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="produk.php">
-                    <i class="bi bi-question-circle"></i>
-                    <span>Data_Produk</span>
+                    <i class="bi bi-box-seam"></i>
+                    <span>Data Produk</span>
                 </a>
             </li><!-- End F.A.Q Page Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="laporan.php">
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-bar-chart-line"></i>
                     <span>Laporan</span>
                 </a>
             </li><!-- End Contact Page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="users.php">
-                    <i class="bi bi-card-list"></i>
+                <a class="nav-link " href="users.php">
+                    <i class="bi bi-people"></i>
                     <span>Manajemen User</span>
                 </a>
             </li><!-- End Register Page Nav -->
@@ -192,7 +165,7 @@ if (isset($_POST['simpan'])) {
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                    <li class="breadcrumb-item">Manajemen User</li>
+                    <li class="breadcrumb-item"><a href="users.php">Manajemen User</a></li>
                     <li class="breadcrumb-item active">Tambah</li>
                 </ol>
             </nav>
@@ -203,56 +176,42 @@ if (isset($_POST['simpan'])) {
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Vertical Form</h5>
+                            <h5 class="card-title">Tambah User</h5>
 
-    <!-- Vertical Form -->
-    <div class="card-body">
-    <h5 class="card-title">Tambah User</h5>
-
-    <form class="row g-3" method="post">
-
-        <div class="col-12">
-            <label for="name" class="form-label">Nama</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-        </div>
-
-        <div class="col-12">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-
-        <div class="col-12">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
-        </div>
-
-        <div class="col-12">
-            <label for="role" class="form-label">Role</label>
-            <select class="form-control" name="role" required>
-                <option value="">-- Pilih Role --</option>
-                <option value="admin">Admin</option>
-                <option value="staff">Staff</option>
-            </select>
-        </div>
-
-        <div class="col-12">
-            <label for="is_active" class="form-label">Status</label>
-            <select class="form-control" name="is_active">
-                <option value="1">Aktif</option>
-                <option value="0">Nonaktif</option>
-            </select>
-        </div>
-
-        <div class="text-center">
-            <button type="button" class="btn btn-warning">
-                <a href="users.php" style="color: black; text-decoration:none;">Kembali</a>
-            </button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
-            <button type="submit" class="btn btn-success" name="simpan">Simpan</button>
-        </div>
-
-    </form>
-</div>
+                            <!-- Vertical Form -->
+                            <form class="row g-3" method="post">
+                                <div class="col-12">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select class="form-control" id="role" name="role" required>
+                                        <option value="">-- Pilih Role --</option>
+                                        <option value="staff">Staff</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="is_active" class="form-label">Status</label>
+                                    <select class="form-control" id="is_active" name="is_active">
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="text-center">
+                                <button type="button" class="btn btn-warning"><a href="users.php" style="color: black; text-decoration:none;">Kembali</a></button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-success" name="simpan">Simpan</button>
+                                </div>
                             </form><!-- Vertical Form -->
 
                         </div>
@@ -263,15 +222,15 @@ if (isset($_POST['simpan'])) {
 
     </main><!-- End #main -->
 
-    <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer">
-        <div class="copyright">
-            &copy; Copyright <strong><span>punya_wiby</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            Designed by <a href="">WIBY PRATAMA</a>
-        </div>
-    </footer><!-- End Footer -->
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>WIBY</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://www.instagram.com/wibpttraaa_/">WIBY_PRATAMA</a>
+    </div>
+  </footer><!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
