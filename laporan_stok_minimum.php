@@ -87,7 +87,8 @@ $html = '
 </head>
 
 <body>
-    <h1>WIBY</h1>
+    <h1>WIBY PRATAMA</h1>
+    <hr>
     <h3>LAPORAN STOK MINIMUM</h3>
     <table>
         <thead>

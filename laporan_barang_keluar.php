@@ -77,8 +77,10 @@ $html = '
 </head>
 
 <body>
-    <h1>Laporan Barang Keluar</h1>
-    <h3>Inventaris Gudang</h3>
+
+    <h1>WIBY PRATAMA</h1>
+    <hr>
+    <h3>Laporan Barang Keluar</h3>
     <table>
         <thead>
             <tr>

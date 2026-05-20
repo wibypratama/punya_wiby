@@ -20,7 +20,7 @@ function query($query) {
 $data = query(" SELECT p.id, p.product_code, p.product_name, c.category_name, p.stock, p.min_stock, p.price, p.gambar, p.created_at
                 FROM products p
                 JOIN categories c ON p.category_id = c.id
-                ORDER BY p.product_name ASC
+                ORDER BY c.category_name ASC, p.product_name ASC
 ");
 
 // Inisialisasi mPDF
@@ -88,7 +88,7 @@ $html = '
 </head>
 <body>
 
-<h1>WIBY</h1>
+<h1>WIBY PRATAMA</h1>
 <hr>
 <h3>LAPORAN STOK BARANG</h3>
 
@@ -116,10 +116,10 @@ $html = '
         $harga = "Rp " . number_format($row['price'], 0, ',', '.');
 
         // Status stok
-        if ($row['stock'] > $row['min_stock']) {
-            $status = '<span class="stok-Minim">Stok Minim</span>';
+        if ($row['stock'] <= $row['min_stock']) {
+            $status = '<span class="stok-minim">Stok Minim</span>';
         } else {
-            $status = '<span class="stok-Minim">Stok Minim</span>';
+            $status = '<span class="stok-aman">Aman</span>';
         }
 
         // path gambar
