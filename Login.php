@@ -69,6 +69,14 @@ if ($user) {
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .logo img {
+      max-height: 55px !important;
+      width: auto;
+      object-fit: contain;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -83,8 +91,8 @@ if ($user) {
 
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">WIBY</span>
+                  <img src="assets/img/logo_wiby.png.png" alt="" width="45">
+                  <span class="d-none d-lg-block">WIBY STORE</span>
                 </a>
               </div><!-- End Logo -->
 
