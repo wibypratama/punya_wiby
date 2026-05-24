@@ -56,11 +56,24 @@ if (isset($_POST['update'])) {
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <style>
-    .logo img {
-      max-height: 55px !important;
-      width: auto;
-      object-fit: contain;
-    }
+  .logo img {
+    max-height: 55px !important;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* WARNA ICON SIDEBAR */
+  .sidebar-nav .nav-link i {
+    color: #4154f1;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+
+  /* EFEK SAAT CURSOR MENYENTUH MENU */
+  .sidebar-nav .nav-link:hover i {
+    color: #5969ff;
+    transform: scale(1.1);
+  }
   </style>
 
 </head>
@@ -116,34 +129,34 @@ if (isset($_POST['update'])) {
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="index.php">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-grid-1x2-fill"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
         <a class="nav-link " href="kategori_produk.php">
-          <i class="bi bi-tags"></i>
+          <i class="bi bi-bookmarks-fill"></i>
           <span>Kategori Produk</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="produk.php">
-          <i class="bi bi-box-seam"></i>
+          <i class="bi bi-box2-fill"></i>
           <span>Data Produk</span>
         </a>
       </li><!-- End Data Produk Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="laporan.php">
-          <i class="bi bi-bar-chart-line"></i>
+          <i class="bi bi-graph-up-arrow"></i>
           <span>Laporan</span>
         </a>
       </li><!-- End Laporan Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="users.php">
-          <i class="bi bi-people"></i>
+          <i class="bi bi-person-workspace"></i>
           <span>Manajemen User</span>
         </a>
       </li><!-- End Register Page Nav -->
